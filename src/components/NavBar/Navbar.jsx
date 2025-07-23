@@ -6,14 +6,14 @@ import DashboardNavbar from "@/components/DashboardNavbar/DashboardNavbar";
 
 const Navbar = () => {
   const pathName = usePathname();
-  const isAdmin = true;
+  const isAdmin = false;
   const Links = <>
     <li><Link href={"/"}>Home</Link></li>
     <li><Link href={"/about"}>About</Link></li>
     <li><Link href={"/blogs"}>Blogs</Link></li>
     <li><Link href={"/Categories"}>Categories</Link></li>
-    {isAdmin&& <><li><Link href={"/dashboard"}>Dashboard</Link></li></>}
-    {!isAdmin&&<><li><Link href={"/dashboard/CreateUser"}>Dashboard</Link></li></>}
+    {isAdmin&&<><li><Link href={"/dashboard/CreateUser"}>Dashboard</Link></li></>}
+    {!isAdmin&& <><li><Link href={"/dashboard"}>Dashboard</Link></li></>}
     <li><Link href={"/contact"}>Contact us</Link></li>
   </>
   if (pathName.includes("dashboard")) {
