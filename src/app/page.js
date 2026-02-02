@@ -8,7 +8,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       {/* Page Title */}
       <h1 className="text-5xl font-extrabold text-gray-900 mb-6">
-        Welcome to Next.js in 2025!
+        Welcome to Next.js in {new Date().getFullYear()}!
       </h1>
 
       {/* Introduction Paragraph */}
