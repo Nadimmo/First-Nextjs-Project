@@ -1,56 +1,74 @@
-import Link from 'next/link'
-import React from 'react'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const DashboardNavbar = () => {
-  const isAdmin = false;
-  const Links = isAdmin ? (
-    <>
-      <li>
-        <Link href={"/"}>Home</Link>
-      </li>
-      <li>
-        <Link href={"/dashboard/addBlog"}>Add Blogs</Link>
-      </li>
-      <li>
-        <Link href={"/dashboard/ManageUser"}>Manage User</Link>
-      </li>
-    </>
-  ) : (
-    <>
-      <li>
-        <Link href={"/"}>Home</Link>
-      </li>
-      <li>
-        <Link href={"/dashboard/CreateUser"}>CreateUser</Link>
-      </li>
-      <li>
-        <Link href={"/dashboard/feedback"}>Feedback</Link>
-      </li>
-    </>
+  const pathname = usePathname();
+
+  const navItem = (href, label) => (
+    <li>
+      <Link
+        href={href}
+        className={`rounded-lg px-4 py-2 font-medium transition-all
+          ${
+            pathname === href
+              ? "bg-sky-500 text-white shadow"
+              : "text-slate-700 hover:bg-sky-100 hover:text-sky-600"
+          }`}
+      >
+        {label}
+      </Link>
+    </li>
   );
+
   return (
-    <div className="navbar bg-sky-400 text-black shadow-sm">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+    <aside className="min-h-screen w-full lg:w-56 bg-white lg:bg-sky-50 border-r">
+      {/* Mobile Navbar */}
+      <div className="navbar lg:hidden shadow-sm">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <label tabIndex={0} className="btn btn-ghost">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
+              </svg>
+            </label>
+
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 w-52 rounded-box bg-white shadow-lg"
+            >
+              {navItem("/dashboard/CreateUser", "Create User")}
+              {navItem("/dashboard/feedback", "Feedback")}
+              {navItem("/", "Home")}
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-            {Links}
-          </ul>
         </div>
-        <a className="btn btn-ghost text-xl">FnExt.Js</a>
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          {Links}
+
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:flex lg:flex-col p-4">
+        <h2 className="mb-6 text-lg font-bold text-sky-600">
+          Dashboard
+        </h2>
+
+        <ul className="menu gap-2">
+          {navItem("/dashboard/CreateUser", "Create User")}
+          {navItem("/dashboard/feedback", "Feedback")}
+          {navItem("/", "Home")}
         </ul>
       </div>
+    </aside>
+  );
+};
 
-    </div>
-  )
-}
-
-export default DashboardNavbar
+export default DashboardNavbar;

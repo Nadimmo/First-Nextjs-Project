@@ -10,7 +10,7 @@ import { NextResponse } from 'next/server'
 // }
 
 export function middleware(request) {
-    const user = false; // Simulating user authentication check
+    const user = true; // Simulating user authentication check
     if(!user) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
