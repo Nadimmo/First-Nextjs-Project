@@ -1,8 +1,11 @@
 "use client";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
 const Navbar = () => {
+  const {data} = useSession()
+  
   // const isAdmin = false;
   const Links = (
     <>
@@ -64,9 +67,11 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{Links}</ul>
       </div>
       <div className="navbar-end">
-        <Link href={"/login"} className="btn">
+        {data?.user?.email? <><p className="mx-2">{data?.user?.name}</p><button onClick={()=> signOut()} className="btn">
+          Log Out
+        </button></>: <><Link href={"api/auth/signin?csrf=true"} className="btn">
           Login
-        </Link>
+        </Link></> }
       </div>
     </div>
   );
