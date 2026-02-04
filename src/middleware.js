@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server'
  
 // // This function can be marked `async` if using `await` inside
@@ -10,8 +11,10 @@ import { NextResponse } from 'next/server'
 // }
 
 export function middleware(request) {
-    const user = true; // Simulating user authentication check
-    if(!user) {
+    const token = cookies(request).get("next-auth.session-token")
+    
+    
+    if(!token) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
     return NextResponse.redirect(new URL('/dashboard/CreateUser', request.url))
