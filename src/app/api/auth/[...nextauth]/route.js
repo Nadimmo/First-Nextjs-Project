@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import LinkedInProvider from "next-auth/providers/linkedin";
+import client from "@/lib/mongodb";
 
 export const authOptions = {
   secret: process.env.PUBLIC_NEXTAUTH_SECRET,
@@ -28,19 +29,17 @@ export const authOptions = {
 
       async authorize(credentials) {
         if (!credentials) return null;
-
         const { email, password } = credentials;
 
-        const currentUser = users.find((u) => u.email === email);
-        if (!currentUser) return null;
+        const currentUser = await client
+          .db("Next_Hero")
+          .collection("allUsers")
+          .findOne({ email: email });
 
-        if (currentUser.password !== Number(password)) return null;
-
-        return {
-          id: currentUser.id,
-          name: currentUser.name,
-          email: currentUser.email,
-        };
+        if (parseInt(currentUser.password) === parseInt(password)) {
+          return currentUser;
+        }
+        return null;
       },
     }),
     GoogleProvider({
@@ -52,9 +51,9 @@ export const authOptions = {
       clientSecret: process.env.PUBLIC_GITHUB_CLIENT_SECRET,
     }),
     LinkedInProvider({
-    clientId: process.env.PUBLIC_LINKEDIN_ID,
-    clientSecret: process.env.PUBLIC_LINKEDIN_SECRET
-  })
+      clientId: process.env.PUBLIC_LINKEDIN_ID,
+      clientSecret: process.env.PUBLIC_LINKEDIN_SECRET,
+    }),
   ],
 
   callback: {
@@ -74,13 +73,3 @@ export const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
-const users = [
-  {
-    id: 1,
-    name: "Nadim Mostofa",
-    email: "nadimmostafa334@gmail.com",
-    password: 1969120,
-  },
-  { id: 2, name: "alex", email: "alex@gmail.com", password: 1969120 },
-];

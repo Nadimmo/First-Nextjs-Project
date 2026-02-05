@@ -69,7 +69,10 @@ const Navbar = () => {
       <div className="navbar-end">
         {data?.user?.email? <><p className="mx-2">{data?.user?.name}</p><button onClick={()=> signOut()} className="btn">
           Log Out
-        </button></>: <><Link href={"api/auth/signin?csrf=true"} className="btn">
+        </button></>: <><Link href={"api/auth/register"} className="btn">
+          Register
+        </Link>
+        <Link href={"api/auth/signin"} className="btn">
           Login
         </Link></> }
       </div>
